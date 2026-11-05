@@ -82,23 +82,23 @@ NEXORA should now be running locally!
 ## Screenshots
 
 ### Home Page
-![Home Page](screenshots/home.png)
+![Home Page](Screenshots/home.png)
 
 ### Authentication
 
 | Login | Register |
 |---|---|
-| ![Login](screenshots/login.png) | ![Register](screenshots/register.png) |
+| ![Login](Screenshots/login.png) | ![Register](Screenshots/register.png) |
 
 ### User Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](Screenshots/dashboard.png)
 
 ### Profile Management
-![Profile](screenshots/profile.png)
+![Profile](Screenshots/profile.png)
 
 ### Skills Management
-![Skills](screenshots/skills.png)
+![Skills](Screenshots/skills.png)
 
 ### Admin Dashboard
-![Admin Dashboard](screenshots/admin.png)
+![Admin Dashboard](Screenshots/admin.png)
 
