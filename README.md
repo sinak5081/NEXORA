@@ -94,7 +94,7 @@ NEXORA should now be running locally!
 ![Dashboard](ScreenShots/dashboard.png)
 
 ### Profile Management
-![Profile](ScreenShots/profile.png)
+![Profile](ScreenShots/Profile.png)
 
 ### Skills Management
 ![Skills](ScreenShots/skills.png)
