@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA | Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo">NEXORA<span>.</span></a>
+
+        <div class="admin-info">
+            <span class="admin-badge">ADMIN</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout ↗</a>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+            <span class="eyebrow">ADMINISTRATION</span>
+            <h1>Welcome to <span>NEXORA.</span></h1>
+            <p>Manage users and control platform access.</p>
+        </section>
+
+       <section class="stats">
+
+        <div class="stat-card">
+            <span>Total Users</span>
+            <h2>{{ total_users | default(0) }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Verified Users</span>
+            <h2>{{ verified_users | default(0) }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Unverified Users</span>
+            <h2>{{ unverified_users | default(0) }}</h2>
+        </div>
+
+        </section>
+
+        <section class="users-section">
+            <div class="section-heading">
+                <div>
+                    <h2>User Management</h2>
+                    <p>Manage registered accounts.</p>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for username, user in users.items() %}
+                            {% if user.get("role") != "admin" %}
+                            <tr>
+                                <td>{{ username }}</td>
+                                <td>{{ user["profile"]["name"] or "—" }}</td>
+                                <td>{{ user["profile"]["city"] or "—" }}</td>
+                                <td>
+                                    {% if user["is_verified"] %}
+                                        <span class="status verified">Verified</span>
+                                    {% else %}
+                                        <span class="status unverified">Unverified</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user["is_verified"] %}
+                                    <form method="POST" action="{{ url_for('toggle_verify', username=username) }}">
+                                        <button type="submit" class="action-btn unverify-btn">
+                                            Unverify
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <form method="POST" action="{{ url_for('toggle_verify', username=username) }}">
+                                        <button type="submit" class="action-btn verify-btn">
+                                            Verify
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    No users found.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
+```

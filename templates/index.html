@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEXORA | User Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="{{ url_for('index') }}" class="logo">
+        <span class="logo-icon">N</span>
+        NEXORA
+    </a>
+    
+
+    {% if user %}
+
+    <nav class="nav-links">
+        <a href="{{ url_for('index') }}" class="active">Dashboard</a>
+        <a href="#profile">Profile</a>
+        <a href="#skills">Skills</a>
+    </nav>
+
+    <span class="login-btn">
+        {{ user["username"] }}
+    </span>
+    <a href="{{ url_for('logout') }}" class="logout-btn">
+    ↪ Logout
+</a>
+
+    {% else %}
+
+    <nav class="nav-links">
+        <a href="{{ url_for('index') }}" class="active">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <a href="{{ url_for('login') }}" class="login-btn">
+        Sign In ↗
+    </a>
+
+    {% endif %}
+
+</header>
+
+
+{% if user %}
+
+<!-- USER DASHBOARD -->
+
+<main class="dashboard">
+
+    <!-- Welcome -->
+
+    <section class="dashboard-welcome">
+
+        <div>
+            <span class="badge">
+                <span class="status-dot"></span>
+                PERSONAL WORKSPACE
+            </span>
+
+            <h1>
+                Welcome back,<br>
+                <span>{{ user["username"] }}.</span>
+            </h1>
+
+            <p class="description">
+                Manage your profile, organize your skills,
+                and keep track of your account.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- Profile Completion -->
+
+    <section class="completion-card">
+
+        <div class="completion-header">
+
+            <div>
+                <span class="small-label">PROFILE STATUS</span>
+                <h2>Profile Completion</h2>
+            </div>
+
+            <span class="completion-percent">
+                {{ "%.0f"|format(completion) }}%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {{ completion }}%;">
+            </div>
+
+        </div>
+
+        <p class="completion-description">
+
+            {% if completion == 100 %}
+                Your profile is fully completed. Great job!
+            {% elif completion >= 66 %}
+                Your profile is almost complete. Just one more step!
+            {% elif completion >= 33 %}
+                You're making progress. Keep completing your profile.
+            {% else %}
+                Start completing your profile to get the most out of NEXORA.
+            {% endif %}
+
+        </p>
+        
+        {% if missing %}
+            <div class="missing-fields">
+                <span class="small-label">INCOMPLETE FIELDS</span>
+
+                
+                <div class="missing-list">
+                    {% for field in missing %}
+                        <a href="{{ url_for('profile') }}" class="missing-tag">
+                            {{ field | capitalize }}
+                            <span>Complete now ↗</span>
+                        </a>
+                    {% endfor %}
+                </div>
+
+            </div>
+        {% else %}
+            <div class="profile-complete">
+                <span>✓</span>
+                Your profile is complete!
+            </div>
+        {% endif %}
+
+
+    </section>
+
+
+    <!-- Statistics -->
+
+    <section class="dashboard-stats">
+
+        <div class="dashboard-stat-card">
+            <span class="small-label">TOTAL SKILLS</span>
+            <h2>{{ user["skills"] | length }}</h2>
+            <p>Your registered skills</p>
+        </div>
+
+        <div class="dashboard-stat-card">
+
+            <span class="small-label">ACCOUNT STATUS</span>
+
+            {% if user["is_verified"] %}
+                <h2>Verified</h2>
+                <p>Your account is verified</p>
+            {% else %}
+                <h2>Pending</h2>
+                <p>Your account is not verified</p>
+            {% endif %}
+
+        </div>
+
+        <div class="dashboard-stat-card">
+
+            <span class="small-label">PROFILE</span>
+
+            {% if completion == 100 %}
+                <h2>Complete</h2>
+                <p>Profile information available</p>
+            {% else %}
+                <h2>Incomplete</h2>
+                <p>Some information is missing</p>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Profile -->
+
+    <section class="dashboard-section" id="profile">
+
+        <div class="section-heading">
+            <div>
+                <span class="small-label">PERSONAL INFORMATION</span>
+                <h2>Your Profile</h2>
+            </div>
+        </div>
+
+        <div class="dashboard-card profile-card">
+
+            <div class="profile-avatar">
+                {{ user["username"][0] | upper }}
+            </div>
+
+            <div class="profile-details">
+
+                <h3>{{ user["username"] }}</h3>
+                <p>@{{ user["username"] }}</p>
+
+                <div class="profile-meta">
+
+                    <span>
+                        Name:
+                        {{ user["profile"]["name"] or "Not provided" }}
+                    </span>
+
+                    <span>
+                        Age:
+                        {{ user["profile"]["age"] or "Not provided" }}
+                    </span>
+
+                    <span>
+                        City:
+                        {{ user["profile"]["city"] or "Not provided" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Skills -->
+
+    <section class="dashboard-section" id="skills">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="small-label">YOUR ABILITIES</span>
+                <h2>Skills Overview</h2>
+            </div>
+
+            <a href="{{ url_for('skills') }}" class="secondary-btn">
+                Manage Skills ↗
+            </a>
+
+        </div>
+
+        <div class="dashboard-card skills-card">
+
+            {% if user["skills"] %}
+
+                <div class="dashboard-skills">
+
+                    {% for skill in user["skills"][:6] %}
+                        <span class="skill-tag">
+                            {{ skill }}
+                        </span>
+                    {% endfor %}
+
+                </div>
+
+                {% if user["skills"] | length > 6 %}
+                    <p class="more-skills">
+                        And {{ user["skills"] | length - 6 }} more skills...
+                    </p>
+                {% endif %}
+
+            {% else %}
+
+                <div class="empty-skills">
+                    <h3>No skills added yet</h3>
+
+                    <p>
+                        Start building your profile by adding your skills.
+                    </p>
+
+                    <a href="{{ url_for('skills') }}" class="primary-btn">
+                        Add Your First Skill ↗
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Quick Actions -->
+
+    <section class="dashboard-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="small-label">GET STARTED</span>
+                <h2>Quick Actions</h2>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+
+            <a href="{{ url_for('skills') }}" class="quick-action-card">
+
+                <span class="action-icon">✦</span>
+
+                <h3>Manage Skills</h3>
+
+                <p>Add or remove your skills.</p>
+
+                <span class="action-arrow">↗</span>
+
+            </a>
+
+            <a href="{{ url_for('profile') }}" class="quick-action-card">
+
+                <span class="action-icon">◈</span>
+
+                <h3>Edit Profile</h3>
+
+                <p>Update your personal information.</p>
+
+                <span class="action-arrow">↗</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+{% else %}
+
+<!-- GUEST LANDING PAGE -->
+
+<main class="hero">
+
+    <div class="hero-content">
+
+        <span class="badge">
+            <span class="status-dot"></span>
+            NEXT GENERATION USER MANAGEMENT
+        </span>
+
+        <h1>
+            Manage users.<br>
+            <span>Simply better.</span>
+        </h1>
+
+        <p class="description">
+            A modern space to manage your account, organize your
+            skills, and keep everything under control.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="{{ url_for('register') }}" class="primary-btn">
+                Get Started <span>↗</span>
+            </a>
+
+            <a href="#features" class="secondary-btn">
+                Explore Features
+            </a>
+
+        </div>
+
+        <div class="hero-footer">
+            <div class="footer-line"></div>
+            <p>BUILT FOR A BETTER DIGITAL EXPERIENCE</p>
+        </div>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="glow glow-purple"></div>
+        <div class="glow glow-blue"></div>
+
+        <div class="glass-card">
+
+            <div class="card-header">
+
+                <div>
+                    <span class="small-label">ACCOUNT PREVIEW</span>
+                    <h2>Your Profile</h2>
+                </div>
+
+                <span class="online-status">● Preview</span>
+
+            </div>
+
+            <div class="profile-section">
+
+                <div class="avatar">N</div>
+
+                <div class="profile-info">
+                    <h3>Guest User</h3>
+                    <p>@guest</p>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="stats">
+
+                <div class="stat-box">
+                    <span class="stat-number">03</span>
+                    <span class="stat-label">Skills</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Organized</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-number">01</span>
+                    <span class="stat-label">Account</span>
+                </div>
+
+            </div>
+
+            <div class="skills-section">
+
+                <span class="small-label">SKILLS PREVIEW</span>
+
+                <div class="skills">
+                    <span>Python</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+                </div>
+
+            </div>
+
+            <div class="card-bottom">
+                <span>Workspace status</span>
+                <span class="active-status">Ready</span>
+            </div>
+
+        </div>
+
+
+        <div class="floating-tag tag-top">
+
+            <span class="tag-icon">✦</span>
+
+            <div>
+                <strong>Secure Space</strong>
+                <small>Your account, organized.</small>
+            </div>
+
+        </div>
+
+
+        <div class="floating-tag tag-bottom">
+
+            <span class="tag-check">✓</span>
+
+            <div>
+                <strong>Profile Management</strong>
+                <small>Everything in one place.</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- Features -->
+
+<section class="landing-features" id="features">
+
+    <span class="small-label">WHAT NEXORA OFFERS</span>
+
+    <h2>Everything in one place.</h2>
+
+    <p>
+        Organize your account, manage your skills,
+        and keep your information accessible.
+    </p>
+
+</section>
+
+
+<!-- About -->
+
+<section class="landing-about" id="about">
+
+    <span class="small-label">ABOUT NEXORA</span>
+
+    <h2>Built for simplicity.</h2>
+
+    <p>
+        NEXORA is a simple and modern user management
+        project designed to make account management easier.
+    </p>
+
+</section>
+
+{% endif %}
+
+
+<!-- Footer -->
+
+<footer class="site-footer">
+
+    <span>© 2026 NEXORA</span>
+
+    <span>
+        DESIGNED FOR SIMPLICITY
+        <span class="footer-star">✦</span>
+    </span>
+
+</footer>
+
+</body>
+</html>

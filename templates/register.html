@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | NEXORA</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="back_link">
+            &larr; Back to home
+        </a>
+    </header>
+
+    <main class="register_container">
+
+        <section class="register_card">
+
+            <div class="register_icon">N</div>
+
+            <div class="register_header">
+                <span class="eyebrown">CREATE YOUR ACCOUNT</span>
+                <h1>Join <span>NEXORA.</span></h1>
+                <p class="subtitle">
+                    Create your account and start organizing your digital space.
+                </p>
+            </div>
+                    {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <p class="flash-message">{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+            <form action="{{ url_for('register') }}" method="post">
+
+                <div class="form_group">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Choose a username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form_group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <div class="form_group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        placeholder="Repeat your password"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="register_button">
+                    Create Account <span>&nearr;</span>
+                </button>
+
+            </form>
+
+            <div class="login-link">
+                <p>Already have an account?</p>
+                <a href="{{ url_for('login') }}">Sign In</a>
+            </div>
+
+        </section>
+
+        <p class="security-note">
+            <span></span>
+            YOUR SPACE. YOUR DATA. YOUR CONTROL.
+        </p>
+
+    </main>
+
+    <footer class="site-footer">
+        <span>© 2026 NEXORA</span>
+        <span>BUILT FOR SIMPLICITY</span>
+    </footer>
+
+</body>
+</html>

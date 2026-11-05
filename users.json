@@ -1,0 +1,90 @@
+{
+    "sina": {
+        "username": "sina",
+        "password": "sinakarimi",
+        "role": "user",
+        "is_verified": true,
+        "skills": [],
+        "profile": {
+            "name": "sina",
+            "age": 18,
+            "city": "isfhan"
+        }
+    },
+    "ali": {
+        "username": "ali",
+        "password": "1234",
+        "role": "user",
+        "is_verified": false,
+        "skills": [],
+        "profile": {
+            "name": "",
+            "age": null,
+            "city": ""
+        }
+    },
+    "admin": {
+        "username": "root",
+        "password": "admin",
+        "role": "admin",
+        "is_verified": false,
+        "skills": [],
+        "profile": {
+            "name": "",
+            "age": null,
+            "city": ""
+        }
+    },
+    "reza": {
+        "username": "reza",
+        "password": "1234",
+        "role": "user",
+        "is_verified": false,
+        "skills": [],
+        "profile": {
+            "name": "",
+            "age": null,
+            "city": ""
+        }
+    },
+    "mos": {
+        "username": "mos",
+        "password": "234",
+        "role": "user",
+        "is_verified": false,
+        "skills": [],
+        "profile": {
+            "name": "",
+            "age": null,
+            "city": ""
+        }
+    },
+    "mot": {
+        "username": "mot",
+        "password": "mot",
+        "role": "user",
+        "is_verified": true,
+        "skills": [
+            "python"
+        ],
+        "profile": {
+            "name": "",
+            "age": null,
+            "city": ""
+        }
+    },
+    "jaf": {
+        "username": "jaf",
+        "password": "jef",
+        "role": "user",
+        "is_verified": false,
+        "skills": [
+            "python"
+        ],
+        "profile": {
+            "name": "",
+            "age": null,
+            "city": ""
+        }
+    }
+}

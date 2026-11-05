@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | NEXORA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="logo">NEXORA</a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Dashboard</a>
+            <a href="{{ url_for('profile') }}" class="active">Profile</a>
+            <a href="{{ url_for('skills') }}">Skills</a>
+        </div>
+    </nav>
+
+    <main class="profile-container">
+
+        <header class="profile-header">
+            <span class="eyebrow">PERSONAL WORKSPACE</span>
+            <h1>My Profile</h1>
+            <p>Manage your personal information.</p>
+        </header>
+
+        <section class="profile-card">
+
+            <div class="profile-avatar">
+                {{ user["username"][0]|upper }}
+            </div>
+
+            <div class="profile-info">
+                <h2>{{ user["username"] }}</h2>
+                <span>@{{ user["username"] }}</span>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Profile Form -->
+            <form method="POST" action="{{ url_for('profile') }}">
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ user['profile']['name'] or '' }}"
+                        placeholder="Enter your full name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        value="{{ user['profile']['age'] or '' }}"
+                        placeholder="Enter your age"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value="{{ user['profile']['city'] or '' }}"
+                        placeholder="Enter your city"
+                    >
+                </div>
+
+                <button type="submit" class="save-btn">
+                    Save Changes
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
